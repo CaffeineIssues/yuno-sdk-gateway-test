@@ -12,8 +12,48 @@
     const params = new URLSearchParams(window.location.search);
     const orderForm = params.get('orderForm'); // JSON string
     const payload = orderForm ? JSON.parse(orderForm) : {};
-    console.log('Payload:', payload);
-    window.YunoVTEX.mount({
+    const yuno = await Yuno.initialize(payload.publicApiKeys[0]);
+    yuno.startSeamlessCheckout({
+    checkoutSession: payload.checkoutSessions[0],
+    elementSelector: "#root-container",
+    countryCode: "BR",
+    language: "pt",
+    showLoading: true,
+    issuersFormEnable: true,
+    showPaymentStatus: true,
+    onLoading: (args) => console.log(args),
+    renderMode: {
+        type: "modal",
+        elementSelector: {
+        apmForm: "#form-element",
+        actionForm: "#action-form-element",
+        },
+    },
+    card: {
+        type: "extends",
+        styles: "",
+        cardSaveEnable: false,
+        texts: {},
+    },
+    texts: {},
+    async yunoCreatePayment(oneTimeToken, tokenWithInformation) {
+        await createPayment({ oneTimeToken, checkoutSession });
+        yuno.continuePayment({ showPaymentStatus: true });
+    },
+    yunoPaymentMethodSelected(data) {
+        console.log("Payment method selected:", data);
+    },
+    yunoPaymentResult(data) {
+        console.log("Payment result:", data);
+        yuno.hideLoader();
+    },
+    yunoError(error, data) {
+        console.error("An error occurred:", error);
+        yuno.hideLoader();
+    },
+    });
+
+    /*window.YunoVTEX.mount({
       elementRoot: "root-container",
       payload: JSON.stringify(payload),
       language: 'pt',
@@ -29,7 +69,7 @@
       onLoading: (loading) => {
         console.log('Loading:', loading);
       }
-    });
+    });*/
   </script>
 </body>
 </html>
