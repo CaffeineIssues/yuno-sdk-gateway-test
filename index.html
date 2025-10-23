@@ -13,7 +13,7 @@
     const orderForm = params.get('orderForm'); // JSON string
     const payload = orderForm ? JSON.parse(orderForm) : {};
     const yuno = await Yuno.initialize(payload.publicApiKeys[0]);
-    yuno.startSeamlessCheckout({
+    await yuno.startSeamlessCheckout({
     checkoutSession: payload.checkoutSessions[0],
     elementSelector: "#root-container",
     countryCode: "BR",
