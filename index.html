@@ -12,12 +12,12 @@
     const params = new URLSearchParams(window.location.search);
     const orderForm = params.get('orderForm'); // JSON string
     const payload = orderForm ? JSON.parse(orderForm) : {};
-
+    console.log('Payload:', payload);
     window.YunoVTEX.mount({
       elementRoot: "root-container",
       payload: JSON.stringify(payload),
       language: 'pt',
-      domainVTEX: 'https://myvtex.yunopartnerbr.com',
+      domainVTEX: 'https://paguemenos.myvtex.com',
       onPaymentDone: (paymentData) => {
         console.log(paymentData);
         alert('Pagamento concluído!');
