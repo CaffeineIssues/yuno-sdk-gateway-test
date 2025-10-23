@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://sdk-web-vtex.y.uno/v1/main.js"></script>
+</head>
+<body>
+  <div id="root-container"></div>
+  <script>
+    // You can get query params from URL, e.g., orderForm
+    const params = new URLSearchParams(window.location.search);
+    const orderForm = params.get('orderForm'); // JSON string
+    const payload = orderForm ? JSON.parse(orderForm) : {};
+
+    window.YunoVTEX.mount({
+      elementRoot: "root-container",
+      payload: JSON.stringify(payload),
+      language: 'pt',
+      domainVTEX: 'https://myvtex.yunopartnerbr.com',
+      onPaymentDone: (paymentData) => {
+        console.log(paymentData);
+        alert('Pagamento concluído!');
+      },
+      onError: (message, error) => {
+        console.error(message, error);
+        alert('Erro: ' + message);
+      },
+      onLoading: (loading) => {
+        console.log('Loading:', loading);
+      }
+    });
+  </script>
+</body>
+</html>
