@@ -12,7 +12,8 @@
     const params = new URLSearchParams(window.location.search);
     const orderForm = params.get('orderForm'); // JSON string
     const payload = orderForm ? JSON.parse(orderForm) : {};
-    const yuno = await Yuno.initialize(payload.publicApiKeys[0]);
+    const yuno = await Yuno.initialize(orderForm.publicApiKeys[0]);
+    
     await yuno.startSeamlessCheckout({
     checkoutSession: payload.checkoutSessions[0],
     elementSelector: "#root-container",
